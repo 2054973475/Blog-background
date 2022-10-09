@@ -1,0 +1,59 @@
+<template>
+  <div class="blog-about__container">
+    <div class="blog-about__header">关于博主</div>
+    <div>
+      <tinymce v-model="content" :height="500" />
+    </div>
+    <div class="blog-about__floor"><el-button type="primary" @click="handleSubmit">提交</el-button></div>
+  </div>
+</template>
+
+<script>
+import Tinymce from '@/components/Tinymce';
+import { Message } from 'element-ui';
+export default {
+  name: 'TinymceDemo',
+  components: { Tinymce },
+  data() {
+    return {
+      content: ``
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.content = this.$store.state.user.userInfo.userDesc;
+    });
+  },
+  methods: {
+    handleSubmit() {
+      const data = {
+        keys: ['userDesc'],
+        values: [this.content]
+      };
+      this.$store.dispatch('user/setInfo', data).then(res => {
+        Message({
+          message: '提交成功',
+          type: 'success'
+        });
+      });
+    }
+  }
+};
+</script>
+
+<style scoped lang="scss">
+.blog-about {
+  &__container {
+    padding: 20px;
+  }
+  &__header{
+    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: bold;
+  }
+  &__floor{
+    margin-top:20px ;
+  }
+}
+</style>
+
