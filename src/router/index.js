@@ -74,10 +74,9 @@ export const constantRoutes = [
         meta: { title: '博客管理' }
       },
       {
-        path: 'administration2',
-        component: () => import('@/views/blog/administration/index'),
-        name: 'administration2',
-        meta: { title: '博客管理' }
+        path: 'editor/:id?',
+        component: () => import('@/views/blog/editor/index'),
+        name: 'editor'
       },
       {
         path: 'classification',

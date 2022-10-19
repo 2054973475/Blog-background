@@ -1,13 +1,13 @@
 import newRequest from '@/utils/newRequest';
 export function getBlogClassify() {
   return newRequest({
-    url: '/blog/getBlogClassify',
+    url: '/blogClassify/getAll',
     method: 'get'
   });
 }
 export function setBlogClassify(data) {
   return newRequest({
-    url: '/blog/setBlogClassify',
+    url: '/blogClassify/set',
     method: 'post',
     data
   });
@@ -15,14 +15,14 @@ export function setBlogClassify(data) {
 
 export function addBlogClassify(data) {
   return newRequest({
-    url: '/blog/addBlogClassify',
+    url: '/blogClassify/add',
     method: 'post',
     data
   });
 }
 export function deleteBlogClassify(params) {
   return newRequest({
-    url: '/blog/deleteBlogClassify',
+    url: '/blogClassify/delete',
     method: 'get',
     params
   });

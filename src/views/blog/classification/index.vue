@@ -1,50 +1,30 @@
 <template>
   <div class="blog-classify__container">
-    <div class="blog-classify__header"><el-button type="primary" @click="headleAdd">增加</el-button></div>
-    <el-table
-      :data="tableData"
-      border
-      style="width: 100%"
-    >
-      <el-table-column
-        type="index"
-      />
-      <el-table-column
-        prop="name"
-        label="名称"
-        width="180"
-      />
-      <el-table-column
-        prop="word"
-        label="关键词"
-        width="300"
-      />
-      <el-table-column
-        prop="desc"
-        label="描述"
-      />
-      <el-table-column
-        prop="blogNumber"
-        label="博客数"
-        width="180"
-      />
-      <el-table-column label="操作" width="180">
+    <div class="blog-classify__header">
+      <el-button type="primary" @click="headleAdd">增加</el-button>
+    </div>
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column type="index" />
+      <el-table-column prop="name" label="名称" width="180" />
+      <el-table-column prop="word" label="关键词" width="150" :show-overflow-tooltip="true" />
+      <el-table-column prop="classifyDesc" label="描述" :show-overflow-tooltip="true" />
+      <el-table-column prop="blogNumber" label="博客数" width="180" />
+      <el-table-column label="操作" width="145">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.row)"
-          >编辑</el-button>
-          <el-popconfirm
-            title="是否要删除该分类"
-            icon-color="red"
-            @onConfirm="handleDelete(scope.row)"
-          >
-            <el-button
-              slot="reference"
-              size="mini"
-              type="danger"
-            >删除</el-button>
-          </el-popconfirm>
+          <div class="blog-classify__setting">
+            <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-popconfirm
+              title="是否要删除该分类"
+              icon-color="red"
+              @onConfirm="handleDelete(scope.row)"
+            >
+              <el-button
+                slot="reference"
+                size="mini"
+                type="danger"
+              >删除</el-button>
+            </el-popconfirm>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -73,17 +53,15 @@
 </template>
 
 <script>
-import { getBlogClassify, addBlogClassify, setBlogClassify, deleteBlogClassify } from '@/api/blog';
-import { Message } from 'element-ui';
-import dayjs from 'dayjs';
+import { getBlogClassify, addBlogClassify, setBlogClassify, deleteBlogClassify } from '@/api/blogClassify';
 export default {
   data() {
     return {
       tableData: [],
       dialogVisible: false,
       classifyForm: {
+        id: 0,
         title: '新增分类',
-        oldName: '',
         name: '',
         word: '',
         classifyDesc: ''
@@ -104,37 +82,26 @@ export default {
     handleSubmit() {
       if (this.classifyForm.title === '新增分类') {
         const data = {
-          keys: ['name', 'word', 'classifyDesc', 'blogNumber', 'createDate', 'updateDate'],
+          keys: ['name', 'word', 'classifyDesc'],
           values: [
             this.classifyForm.name,
             this.classifyForm.word,
-            this.classifyForm.classifyDesc,
-            0,
-            dayjs().format('YYYY-MM-DD HH:mm:ss'),
-            dayjs().format('YYYY-MM-DD HH:mm:ss')
+            this.classifyForm.classifyDesc
           ]
         };
-        addBlogClassify(data).then(res => {
-          if (res) {
-            Message.success('分类新增成功');
-          }
-        });
+        addBlogClassify(data);
       } else {
+        console.log(this.classifyForm);
         const data = {
-          name: this.classifyForm.oldName,
-          keys: ['name', 'word', 'classifyDesc', 'updateDate'],
+          id: this.classifyForm.id,
+          keys: ['name', 'word', 'classifyDesc'],
           values: [
             this.classifyForm.name,
             this.classifyForm.word,
-            this.classifyForm.classifyDesc,
-            dayjs().format('YYYY-MM-DD HH:mm:ss')
+            this.classifyForm.classifyDesc
           ]
         };
-        setBlogClassify(data).then(res => {
-          if (res) {
-            Message.success('分类修改成功');
-          }
-        });
+        setBlogClassify(data);
       }
       this.dialogVisible = false;
       this.initTable();
@@ -142,8 +109,8 @@ export default {
     handleEdit(row) {
       this.dialogVisible = true;
       const editClassifyForm = {
+        id: row.id,
         title: '修改分类',
-        oldName: row.name,
         name: row.name,
         word: row.word,
         classifyDesc: row.classifyDesc
@@ -151,16 +118,15 @@ export default {
       this.classifyForm = editClassifyForm;
     },
     handleDelete(row) {
-      deleteBlogClassify({ name: row.name }).then(res => {
+      deleteBlogClassify({ id: row.id }).then(res => {
         this.initTable();
-        Message.success('分类删除成功');
       });
     },
     headleAdd() {
       this.dialogVisible = true;
       const addClassifyForm = {
+        id: 0,
         title: '新增分类',
-        oldName: '',
         name: '',
         word: '',
         classifyDesc: ''
@@ -171,12 +137,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.blog-classify{
-  &__container{
+.blog-classify {
+  &__container {
     padding: 20px;
   }
-  &__header{
+  &__header {
     margin-bottom: 20px;
+  }
+  &__setting{
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

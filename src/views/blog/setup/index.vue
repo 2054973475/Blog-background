@@ -17,6 +17,9 @@
       <el-form-item label="博主标语">
         <el-input v-model="form.introduction" />
       </el-form-item>
+      <el-form-item label="博主QQ">
+        <el-input v-model="form.QQ" />
+      </el-form-item>
       <el-form-item label="博主邮箱">
         <el-input v-model="form.email" />
       </el-form-item>
@@ -44,7 +47,8 @@ export default {
         introduction: '',
         avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
         email: '',
-        phone: ''
+        phone: '',
+        QQ: ''
       }
     };
   },
@@ -55,12 +59,13 @@ export default {
     this.form.avatar = data.avatar;
     this.form.email = data.email;
     this.form.phone = data.phone;
+    this.form.QQ = data.QQ;
   },
   methods: {
     onSubmit() {
       const data = {
-        keys: ['name', 'introduction', 'avatar', 'email', 'phone'],
-        values: [this.form.name, this.form.introduction, this.form.avatar, this.form.email, this.form.phone]
+        keys: Object.keys(this.form),
+        values: Object.values(this.form)
       };
       this.$store.dispatch('user/setInfo', data).then(res => {
         console.log(res);

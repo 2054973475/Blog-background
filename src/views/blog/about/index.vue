@@ -2,7 +2,7 @@
   <div class="blog-about__container">
     <div class="blog-about__header">关于博主</div>
     <div>
-      <tinymce v-model="content" :height="500" />
+      <Tinymce v-model="content" :height="500" />
     </div>
     <div class="blog-about__floor"><el-button type="primary" @click="handleSubmit">提交</el-button></div>
   </div>
@@ -10,7 +10,6 @@
 
 <script>
 import Tinymce from '@/components/Tinymce';
-import { Message } from 'element-ui';
 export default {
   name: 'TinymceDemo',
   components: { Tinymce },
@@ -30,12 +29,7 @@ export default {
         keys: ['userDesc'],
         values: [this.content]
       };
-      this.$store.dispatch('user/setInfo', data).then(res => {
-        Message({
-          message: '提交成功',
-          type: 'success'
-        });
-      });
+      this.$store.dispatch('user/setInfo', data);
     }
   }
 };
