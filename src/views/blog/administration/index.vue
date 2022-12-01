@@ -4,8 +4,9 @@
       <el-button type="primary" @click="handleAddBlog">创建博客</el-button>
     </div>
     <el-table
-      :data="tableData"
+      :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
       border
+      height="700"
       style="width: 100%"
     >
       <el-table-column
@@ -46,6 +47,14 @@
         prop="releaseDate"
       />
       <el-table-column label="操作" width="145">
+        <template slot="header" slot-scope="scope">
+          <el-input
+            v-if="scope"
+            v-model="search"
+            size="mini"
+            placeholder="输入关键字搜索"
+          />
+        </template>
         <template slot-scope="scope">
           <div class="blog-admin__setting">
             <el-button
@@ -66,7 +75,8 @@
           </div>
         </template>
       </el-table-column>
-    </el-table></div>
+    </el-table>
+  </div>
 </template>
 
 <script>
@@ -74,7 +84,8 @@ import { getBlogArticleAll, deleteBlogArticle } from '@/api/blogArticle';
 export default {
   data() {
     return {
-      tableData: []
+      tableData: [],
+      search: ''
     };
   },
   mounted() {
@@ -114,6 +125,11 @@ export default {
   &__setting{
     display: flex;
     justify-content: space-between;
+  }
+  &__pagination{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
   }
 }
 </style>

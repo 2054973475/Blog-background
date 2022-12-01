@@ -2,9 +2,10 @@ import axios from 'axios';
 import { MessageBox, Message } from 'element-ui';
 import store from '@/store';
 import { getToken } from '@/utils/auth';
+export const baseURL = 'http://localhost:3000';
 
 const service = axios.create({
-  baseURL: 'http://39.108.14.150:3000',
+  baseURL: baseURL,
   timeout: 5000
 });
 

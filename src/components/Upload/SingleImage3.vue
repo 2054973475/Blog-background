@@ -26,7 +26,7 @@
 </template>
 
 <script>
-
+import { baseURL } from '@/utils/request.js';
 export default {
   name: 'SingleImageUpload3',
   props: {
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      tempUrl: '',
+      tempUrl: baseURL,
       dataObj: { token: '', key: '' }
     };
   },
@@ -53,7 +53,7 @@ export default {
     emitInput(val) {
       this.$emit('input', val);
     },
-    handleImageSuccess(file) {
+    async handleImageSuccess(file) {
       this.emitInput(file.files.file);
     }
   }

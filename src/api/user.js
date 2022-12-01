@@ -1,6 +1,6 @@
-import newRequest from '@/utils/newRequest';
+import request from '@/utils/request.js';
 export function loginApi(data) {
-  return newRequest({
+  return request({
     url: '/user/login',
     method: 'post',
     data
@@ -8,14 +8,14 @@ export function loginApi(data) {
 }
 
 export function getInfoApi() {
-  return newRequest({
+  return request({
     url: '/user/getInfo',
     method: 'get'
   });
 }
 
 export function setInfoApi(data) {
-  return newRequest({
+  return request({
     url: '/user/setInfo',
     method: 'post',
     data

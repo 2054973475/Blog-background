@@ -98,7 +98,30 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/material',
+    component: Layout,
+    redirect: '/material/Links',
+    name: 'material',
+    meta: {
+      title: '物料管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'Links',
+        name: 'Links',
+        component: () => import('@/views/material/Links/index'),
+        meta: { title: '友情链接' }
+      },
+      {
+        path: 'Carousel',
+        name: 'Carousel',
+        component: () => import('@/views/material/Carousel/index'),
+        meta: { title: '轮播图片' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ];

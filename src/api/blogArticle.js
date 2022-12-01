@@ -1,19 +1,19 @@
-import newRequest from '@/utils/newRequest';
+import request from '@/utils/request.js';
 export function getBlogArticleAll() {
-  return newRequest({
+  return request({
     url: '/blogArticle/getAll',
     method: 'get'
   });
 }
 export function getBlogArticle(params) {
-  return newRequest({
+  return request({
     url: '/blogArticle/get',
     method: 'get',
     params
   });
 }
 export function setBlogArticle(data) {
-  return newRequest({
+  return request({
     url: '/blogArticle/set',
     method: 'post',
     data
@@ -21,14 +21,14 @@ export function setBlogArticle(data) {
 }
 
 export function addBlogArticle(data) {
-  return newRequest({
+  return request({
     url: '/blogArticle/add',
     method: 'post',
     data
   });
 }
 export function deleteBlogArticle(params) {
-  return newRequest({
+  return request({
     url: '/blogArticle/delete',
     method: 'get',
     params
