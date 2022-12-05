@@ -91,7 +91,6 @@ export default {
         };
         addBlogClassify(data);
       } else {
-        console.log(this.classifyForm);
         const data = {
           id: this.classifyForm.id,
           keys: ['name', 'word', 'classifyDesc'],

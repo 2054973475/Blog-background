@@ -111,7 +111,11 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="content" style="margin-bottom: 30px">
-          <Tinymce ref="editor" v-model="postForm.content" :height="400" />
+          <WangEditor
+            :height="400"
+            :value="postForm.content"
+            @updateHtml="(value) => (postForm.content = value)"
+          />
         </el-form-item>
 
         <el-form-item prop="coverImg" style="margin-bottom: 30px">
@@ -131,8 +135,12 @@
 </template>
 
 <script>
-import { addBlogArticle, getBlogArticle, setBlogArticle } from '@/api/blogArticle';
-import Tinymce from '@/components/Tinymce';
+import {
+  addBlogArticle,
+  getBlogArticle,
+  setBlogArticle
+} from '@/api/blogArticle';
+import WangEditor from '@/components/WangEditor';
 import Upload from '@/components/Upload/SingleImage3';
 import MDinput from '@/components/MDinput';
 import { getBlogClassify } from '@/api/blogClassify';
@@ -148,7 +156,7 @@ const defaultForm = {
 };
 
 export default {
-  components: { Tinymce, MDinput, Upload },
+  components: { WangEditor, MDinput, Upload },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value.length === 0) {
@@ -176,17 +184,17 @@ export default {
   },
   created() {
     this.getClassifyList();
-    console.log(this.$router.currentRoute.params.id);
     if (!this.$router.currentRoute.params.id) {
       this.setPageTitle('创建博客');
     } else {
       this.setPageTitle('编辑博客');
-      getBlogArticle({ id: this.$router.currentRoute.params.id }).then(res => {
-        delete res.result[0].classify;
-        this.postForm = res.result[0];
-        console.log(this.postForm);
-        this.postForm.tags = this.postForm.tags.split(',');
-      });
+      getBlogArticle({ id: this.$router.currentRoute.params.id }).then(
+        (res) => {
+          delete res.result[0].classify;
+          this.postForm = res.result[0];
+          this.postForm.tags = this.postForm.tags.split(',');
+        }
+      );
     }
   },
   methods: {
@@ -194,7 +202,6 @@ export default {
       document.title = `${title}`;
     },
     submitForm() {
-      console.log(this.postForm);
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading = true;
@@ -210,7 +217,6 @@ export default {
           this.loading = false;
           this.$router.replace({ name: 'administration' });
         } else {
-          console.log('error submit!!');
           return false;
         }
       });
@@ -218,7 +224,7 @@ export default {
     addArticle(data) {
       data.keys.push('viewNumber');
       data.values.push(0);
-      addBlogArticle(data).then(res => {
+      addBlogArticle(data).then((res) => {
         this.$notify({
           title: '成功',
           message: '提交文章成功',
@@ -229,7 +235,7 @@ export default {
     },
     setArticle(data) {
       data['id'] = this.$router.currentRoute.params.id;
-      setBlogArticle(data).then(res => {
+      setBlogArticle(data).then((res) => {
         this.$notify({
           title: '成功',
           message: '修改文章成功',

@@ -68,7 +68,6 @@ export default {
         values: Object.values(this.form)
       };
       this.$store.dispatch('user/setInfo', data).then(res => {
-        console.log(res);
       });
     },
     toggleShow() {

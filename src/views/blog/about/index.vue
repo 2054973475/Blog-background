@@ -2,17 +2,23 @@
   <div class="blog-about__container">
     <div class="blog-about__header">关于博主</div>
     <div>
-      <Tinymce v-model="content" :height="500" />
+      <WangEditor
+        :height="500"
+        :value="content"
+        @unpdateHtml="(value) => (content = value)"
+      />
     </div>
-    <div class="blog-about__floor"><el-button type="primary" @click="handleSubmit">提交</el-button></div>
+    <div class="blog-about__floor">
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce';
+import WangEditor from '@/components/WangEditor';
 export default {
-  name: 'TinymceDemo',
-  components: { Tinymce },
+  name: 'BlogAbout',
+  components: { WangEditor },
   data() {
     return {
       content: ``
@@ -40,13 +46,13 @@ export default {
   &__container {
     padding: 20px;
   }
-  &__header{
+  &__header {
     margin-bottom: 20px;
     font-size: 30px;
     font-weight: bold;
   }
-  &__floor{
-    margin-top:20px ;
+  &__floor {
+    margin-top: 20px;
   }
 }
 </style>
