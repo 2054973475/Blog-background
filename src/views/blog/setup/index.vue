@@ -35,6 +35,7 @@
 
 <script>
 import myUpload from 'vue-image-crop-upload/upload-2.vue';
+import { cos, Bucket, Region } from '@/api/util';
 export default {
   components: {
     myUpload
@@ -74,7 +75,31 @@ export default {
       this.show = !this.show;
     },
     cropSuccess(imgDataUrl, field) {
-      this.form.avatar = imgDataUrl;
+      var base64Url = imgDataUrl;
+      var dataURLtoBlob = function(dataurl) {
+        var arr = dataurl.split(',');
+        var mime = arr[0].match(/:(.*?);/)[1];
+        var bstr = atob(arr[1]);
+        var n = bstr.length;
+        var u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+      };
+      var body = dataURLtoBlob(base64Url);
+      cos.putObject(
+        {
+          Bucket: Bucket,
+          Region: Region,
+          Key: `images/avatar/avatar.jpeg`,
+          Body: body
+        },
+        (err, data) => {
+          if (err) throw err;
+          this.form.avatar = 'https://' + data.Location;
+        }
+      );
     }
   }
 };
