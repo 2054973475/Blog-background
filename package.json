@@ -20,6 +20,7 @@
     "@wangeditor/editor-for-vue": "^1.0.2",
     "axios": "0.18.1",
     "core-js": "3.6.5",
+    "cos-js-sdk-v5": "^1.4.15-beta.0",
     "dayjs": "^1.11.5",
     "element-ui": "2.13.2",
     "file-saver": "^2.0.5",

@@ -18,6 +18,7 @@
 
 <script>
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { cos, Bucket, Region } from '@/api/util';
 export default {
   components: { Editor, Toolbar },
   props: {
@@ -28,6 +29,10 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    type: {
+      type: String,
+      default: 'article'
     }
   },
   data() {
@@ -41,7 +46,10 @@ export default {
         placeholder: '请输入内容...',
         MENU_CONF: {
           uploadImage: {
-            base64LimitSize: 1000 * 1024
+            server: '',
+            timeout: 5 * 1000, // 5s
+            fieldName: 'myFileName',
+            customUpload: this.customUpload
           }
         }
       },
@@ -57,6 +65,26 @@ export default {
     }
   },
   methods: {
+    customUpload(file, insertFn) {
+      let key = '';
+      if (this.type === 'article') {
+        key = `images/${this.type}/${new Date().getTime() + '-' + file.name}`;
+      } else {
+        key = `images/${this.type}/${new Date().getTime() + '-' + file.name}`;
+      }
+      cos.putObject(
+        {
+          Bucket: Bucket,
+          Region: Region,
+          Key: key,
+          Body: file
+        },
+        (err, data) => {
+          if (err) throw err;
+          insertFn('https://' + data.Location);
+        }
+      );
+    },
     onCreated(editor) {
       this.editor = Object.seal(editor);
     },

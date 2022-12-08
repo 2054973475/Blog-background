@@ -38,7 +38,7 @@
     >
       <el-form ref="form" :model="carouselForm" label-width="80px">
         <el-form-item>
-          <Upload v-model="carouselForm.picture" />
+          <Upload v-model="carouselForm.picture" type="carousel" />
         </el-form-item>
         <el-form-item label="名称">
           <el-input v-model="carouselForm.name" />

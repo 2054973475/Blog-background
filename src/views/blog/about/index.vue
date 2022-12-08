@@ -3,6 +3,7 @@
     <div class="blog-about__header">关于博主</div>
     <div>
       <WangEditor
+        type="about"
         :height="500"
         :value="content"
         @unpdateHtml="(value) => (content = value)"
