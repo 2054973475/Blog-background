@@ -52,7 +52,7 @@ export const constantRoutes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index'),
-        meta: { title: 'Dashboard', icon: 'dashboard' }
+        meta: { title: '首页', icon: 'dashboard' }
       }
     ]
   },
@@ -72,6 +72,12 @@ export const constantRoutes = [
         component: () => import('@/views/blog/administration/index'),
         name: 'administration',
         meta: { title: '博客管理' }
+      },
+      {
+        path: 'leavingmessage',
+        component: () => import('@/views/blog/leavingmessage/index'),
+        name: 'leavingmessage',
+        meta: { title: '博客留言' }
       },
       {
         path: 'editor/:id?',
@@ -119,6 +125,30 @@ export const constantRoutes = [
         name: 'Carousel',
         component: () => import('@/views/material/Carousel/index'),
         meta: { title: '轮播图片' }
+      }
+    ]
+  },
+  {
+    path: '/users',
+    component: Layout,
+    redirect: '/users/messageUsers',
+    name: 'users',
+    meta: {
+      title: '用户管理',
+      icon: 'user'
+    },
+    children: [
+      {
+        path: 'messageUsers',
+        name: 'messageUsers',
+        component: () => import('@/views/users/messageUsers/index'),
+        meta: { title: '留言用户' }
+      },
+      {
+        path: 'password',
+        name: 'password',
+        component: () => import('@/views/users/password/index'),
+        meta: { title: '密码修改' }
       }
     ]
   },

@@ -6,12 +6,12 @@
     <el-table
       :data="tableData.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))"
       border
-      height="700"
+      height="600"
       style="width: 100%"
     >
       <el-table-column
         label="序号"
-        type="index"
+        prop="id"
         width="80"
         align="center"
       />
@@ -30,6 +30,20 @@
         label="标签"
         prop="tags"
         :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        label="留言数"
+        prop="messagesNumber"
+        width="80"
+        :show-overflow-tooltip="true"
+        align="center"
+      />
+      <el-table-column
+        label="阅读数"
+        prop="viewNumber"
+        width="80"
+        :show-overflow-tooltip="true"
+        align="center"
       />
       <el-table-column
         label="发布状态"

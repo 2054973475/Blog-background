@@ -21,3 +21,10 @@ export function setInfoApi(data) {
     data
   });
 }
+export function updatePasswordApi(data) {
+  return request({
+    url: '/user/updatePassword',
+    method: 'post',
+    data
+  });
+}
