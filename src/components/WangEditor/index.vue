@@ -1,22 +1,33 @@
 <template>
-  <div style="border: 1px solid #ccc">
-    <Toolbar
-      style="border-bottom: 1px solid #ccc"
-      :editor="editor"
-      :default-config="toolbarConfig"
-      :mode="mode"
-    />
-    <Editor
-      v-model="html"
-      :style="`height: ${height}px; overflow-y: hidden`"
-      :default-config="editorConfig"
-      :mode="mode"
-      @onCreated="onCreated"
+  <div class="wang-editor__conatiner">
+    <div style="border: 1px solid #ccc">
+      <Toolbar
+        style="border-bottom: 1px solid #ccc"
+        :editor="editor"
+        :default-config="toolbarConfig"
+        :mode="mode"
+      />
+      <Editor
+        v-model="html"
+        :style="`height: ${height}px; overflow-y: hidden`"
+        :default-config="editorConfig"
+        :mode="mode"
+        @onCreated="onCreated"
+      />
+    </div>
+    <ul
+      class="wang-editor__meun"
+      :style="`height: ${height + 125}px;`"
+      @click="handleMeun"
+      v-html="meunHtml"
     />
   </div>
 </template>
 
 <script>
+import { Boot } from '@wangeditor/editor';
+import markdownModule from '@wangeditor/plugin-md';
+Boot.registerModule(markdownModule);
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { cos, Bucket, Region } from '@/api/util';
 export default {
@@ -53,7 +64,8 @@ export default {
           }
         }
       },
-      mode: 'default'
+      mode: 'default',
+      meunHtml: ''
     };
   },
   watch: {
@@ -62,6 +74,19 @@ export default {
     },
     value() {
       this.html = this.value;
+      this.$nextTick(() => {
+        const headers = this.editor.getElemsByTypePrefix('header');
+        const html = headers
+          .map((header) => {
+            const text = header.children[0].text;
+            const { id, type } = header;
+            return `<li id="${id}" type="${type}" style="${`padding-left: ${
+              Number(type.replace('header', '')) * 1.5
+            }ch;`}">${text}</li>`;
+          })
+          .join('');
+        this.meunHtml = html;
+      });
     }
   },
   methods: {
@@ -85,6 +110,12 @@ export default {
         }
       );
     },
+    handleMeun(event) {
+      if (event.target.tagName !== 'LI') return;
+      event.preventDefault();
+      const id = event.target.id;
+      this.editor.scrollToElem(id); // 滚动到标题
+    },
     onCreated(editor) {
       this.editor = Object.seal(editor);
     },
@@ -97,3 +128,25 @@ export default {
 };
 </script>
 <style src="@wangeditor/editor/dist/css/style.css"></style>
+<style lang="scss">
+.wang-editor {
+  &__conatiner {
+    display: flex;
+  }
+  &__meun {
+    padding: 0;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.05);
+    min-width: 250px;
+    overflow-y: scroll;
+    list-style: none;
+    li {
+      list-style: none;
+      cursor: pointer;
+      &:hover {
+        color: red;
+      }
+    }
+  }
+}
+</style>
