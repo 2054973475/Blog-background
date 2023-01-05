@@ -1,6 +1,6 @@
 <template>
   <div class="recent-comments__container">
-    <div class="recent-comments__header">近期文章</div>
+    <div class="recent-comments__header">近期留言</div>
     <div class="recent-comments__content">
       <el-table height="290" :data="data" border style="width: 100%" stripe>
         <el-table-column
